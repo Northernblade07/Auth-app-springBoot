@@ -14,7 +14,10 @@ import java.util.UUID;
 @Table(name = "user_role")
 public class Role {
     @Id
-    private UUID id = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.UUID)
+   @Column(name = "id")
+    private UUID id;
+
     @Column(unique = true , nullable = false)
     private String name;
 }
