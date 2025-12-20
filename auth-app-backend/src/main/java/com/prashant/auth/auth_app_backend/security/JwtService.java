@@ -79,11 +79,7 @@ public class JwtService {
 //    parse token
 
     public Jws<Claims> parse(String token){
-        try {
-            return Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
-        } catch (JwtException e){
-            throw e;
-        }
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
     }
 
 //    isAccessToken
@@ -104,10 +100,24 @@ public class JwtService {
         return UUID.fromString(c.getSubject());
     }
 
-//    get tokenId
+//    get tokenId - jti
 
-    public String getTokenId(String token){
+    public String getJti(String token){
         Claims c = parse(token).getPayload();
         return c.getId();
     }
+
+    public List<String> getRoles(String token){
+        Claims c = parse(token).getPayload();
+        return (List<String>) c.get("roles");
+    }
+
+    public String getEmail(String token){
+        Claims c = parse(token).getPayload();
+        return (String) c.get("email");
+    }
+
+
+
+
 }
