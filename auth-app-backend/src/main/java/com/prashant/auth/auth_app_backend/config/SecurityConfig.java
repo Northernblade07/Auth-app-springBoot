@@ -47,7 +47,12 @@ public class SecurityConfig {
                         e.printStackTrace();
                         response.setStatus(401);
                         response.setContentType("application/json");
+
                         String message = "unauthorized access! "+e.getMessage();
+                        String error =(String)request.getAttribute("error");
+                        if(error !=null){
+                            message = error;
+                        }
 
                     Map<String , String> errorMap = Map.of(
                             "message", message,
