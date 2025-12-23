@@ -44,6 +44,7 @@ security:
 
 #oauth configurations
 spring.security.oauth2.client.registration :
+#  THIS IS THE CALLBACK URL FOR AUTHORIZATION FOR ANY OAUTH2 - http://localhost:8082/login/oauth2/code/{google or gitHub}
   google:
     client-id: ${GOOGLE_CLIENT_ID:test-client-id}
     client-secret: ${GOOGLE_CLIENT_SECRET:test-client-secret}
@@ -51,3 +52,15 @@ spring.security.oauth2.client.registration :
       - email
       - profile
       - openid
+  github:
+    client-id: ${GITHUB_CLIENT_ID:test-client-id}
+    client-secret: ${GITHUB_CLIENT_SECRET:test-client-secret}
+    scope:
+      - user:email
+      - read:profile
+
+app:
+  auth:
+    frontend:
+      success-redirect: http://localhost:5173/auth/success
+      failure-redirect: http://localhost:5173/auth/failure
