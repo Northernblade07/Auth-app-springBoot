@@ -1,9 +1,11 @@
-import React from 'react'
+
+import Home from './components/home/FuturisticAuthHome'
 
 const App = () => {
   return (
-    <div className='bg-amber-900 text-white'>App</div>
-  )
+    
+<Home/>
+     )
 }
 
 export default App
