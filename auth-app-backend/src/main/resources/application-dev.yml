@@ -60,6 +60,8 @@ spring.security.oauth2.client.registration :
       - read:profile
 
 app:
+  cors:
+    front-end-url: http://localhost:5173,
   auth:
     frontend:
       success-redirect: http://localhost:5173/auth/success

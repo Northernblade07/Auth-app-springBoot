@@ -1,11 +1,14 @@
 import * as React from "react"
 import { motion } from "framer-motion"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Github, Mail, Lock } from "lucide-react"
+import { loginUser } from "@/services/AuthService"
+import { toast } from "react-toastify"
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -13,6 +16,39 @@ const fadeUp = {
 }
 
 const Login: React.FC = () => {
+  const [data , setData] = React.useState<LoginData>({
+   email:"",
+   password:""
+  })
+
+  const navigate = useNavigate();
+  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    console.log(e)
+    setData(value=>({
+      ...value,
+      [e.target.name]:e.target.value
+    }))
+  }
+
+
+  const handleformSubmit=async(e:React.FormEvent)=>{
+    e.preventDefault();
+
+    try {
+      const res = await loginUser(data);
+      toast.success("loged in successfully")
+      console.log(res);
+      setData({
+        email:"",
+        password:""
+      })
+
+      navigate("/")
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in loging in user")
+    }
+  }
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4 sm:px-6">
       {/* Ambient glow */}
@@ -39,16 +75,19 @@ const Login: React.FC = () => {
             </div>
 
             {/* FORM */}
-            <form className="space-y-4">
+            <form onSubmit={handleformSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
+                    name="email"
                     id="email"
                     type="email"
                     placeholder="you@example.com"
                     className="pl-9 h-10 sm:h-11"
+                    value={data.email}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -58,10 +97,13 @@ const Login: React.FC = () => {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
+                  name="password"
                     id="password"
                     type="password"
                     placeholder="••••••••"
                     className="pl-9 h-10 sm:h-11"
+                    value={data.password}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
