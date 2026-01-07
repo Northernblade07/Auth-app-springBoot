@@ -12,10 +12,10 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 }
 
-const Login = () => {
+const Login: React.FC = () => {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background px-4">
-      {/* ambient glow */}
+    <main className="min-h-screen flex items-center justify-center bg-background px-4 sm:px-6">
+      {/* Ambient glow */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/20 dark:from-primary/10 via-transparent to-transparent blur-3xl" />
 
       <motion.div
@@ -23,17 +23,18 @@ const Login = () => {
         initial="hidden"
         animate="visible"
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md"
+        className="w-full max-w-sm sm:max-w-md"
       >
         <Card className="border border-border bg-background/80 backdrop-blur">
-          <CardContent className="p-6 space-y-6">
+          <CardContent className="p-5 sm:p-6 md:p-8 space-y-6">
             {/* HEADER */}
             <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
                 Welcome Back
               </h1>
-              <p className="text-muted-foreground text-sm">
-                Sign in to continue to <span className="text-primary">Authify</span>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Sign in to continue to{" "}
+                <span className="text-primary">Authify</span>
               </p>
             </div>
 
@@ -47,7 +48,7 @@ const Login = () => {
                     id="email"
                     type="email"
                     placeholder="you@example.com"
-                    className="pl-9"
+                    className="pl-9 h-10 sm:h-11"
                   />
                 </div>
               </div>
@@ -60,12 +61,12 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="••••••••"
-                    className="pl-9"
+                    className="pl-9 h-10 sm:h-11"
                   />
                 </div>
               </div>
 
-              <Button className="w-full mt-2">
+              <Button className="w-full h-10 sm:h-11">
                 Sign In
               </Button>
             </form>
@@ -83,13 +84,13 @@ const Login = () => {
             </div>
 
             {/* OAUTH */}
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button variant="outline" className="gap-2 h-10 sm:h-11">
                 <Github className="h-4 w-4" />
                 GitHub
               </Button>
 
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" className="gap-2 h-10 sm:h-11">
                 <svg
                   className="h-4 w-4"
                   viewBox="0 0 48 48"
