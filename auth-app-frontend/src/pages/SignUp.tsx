@@ -10,6 +10,8 @@ import { Github, Mail, Lock, UserPlus, User } from "lucide-react"
 import { toast } from "react-toastify"
 import type  RegisterData  from "@/models/RegisterData"
 import { registerUser } from "@/services/AuthService"
+import { Alert, AlertTitle } from "@/components/ui/alert"
+import { Spinner } from "@/components/ui/spinner"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -27,7 +29,7 @@ const [data , setData] = useState<RegisterData>({
 })
 
 const [loading , setLoading] = useState<boolean>(false);
-const [error , setError ] = useState(null);
+const [error , setError ] = useState<any>(null);
 const navigate = useNavigate();
 const handleInputchnage =(e:React.ChangeEvent<HTMLInputElement>)=>{
   console.log(e.target.name);
@@ -79,6 +81,7 @@ setData({
 navigate('/login')
 } catch (error) {
   console.log(error);
+  setError(error)
   toast.error("Error in registering the User")
 }
 
@@ -115,6 +118,14 @@ navigate('/login')
               </p>
             </div>
 
+        {
+          error && 
+          <div>
+            <Alert>
+            <AlertTitle>{error?.response?.data?.message || error?.message}</AlertTitle>
+            </Alert>
+          </div>
+        }
             {/* FORM */}
             <form onSubmit={handleFormSubmit} className="space-y-2">
               
@@ -166,8 +177,8 @@ navigate('/login')
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-10 sm:h-11 gap-2">
-                Create Account
+              <Button disabled={loading} type="submit" className="w-full h-10 sm:h-11 gap-2">
+               {loading ? <Spinner/> : "Create Account"}
               </Button>
             </form>
 

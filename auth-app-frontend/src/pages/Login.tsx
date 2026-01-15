@@ -5,9 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Github, Mail, Lock } from "lucide-react"
+import { Github, Mail, Lock, CheckCircle2Icon } from "lucide-react"
 import { loginUser } from "@/services/AuthService"
 import { toast } from "react-toastify"
+import type LoginData from "@/models/LoginData"
+import { Alert, AlertTitle } from "@/components/ui/alert"
+import { Spinner } from "@/components/ui/spinner"
 
 
 const fadeUp = {
@@ -21,6 +24,8 @@ const Login: React.FC = () => {
    password:""
   })
 
+  const [error , setError] = React.useState<any>(null)
+  const [loading , setLoading] = React.useState<boolean>(false)
   const navigate = useNavigate();
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
     console.log(e)
@@ -34,19 +39,46 @@ const Login: React.FC = () => {
   const handleformSubmit=async(e:React.FormEvent)=>{
     e.preventDefault();
 
+    setLoading(true)
+    if(data.email.trim()==""){
+      toast.error("Email is required")
+      setLoading(false)
+      return;
+    }
+
+    if(data.password.trim()==""){
+      toast.error("Password is Required")
+      setLoading(false)
+      return;
+    }
+
+    if(data.password.trim().length < 6){
+      toast.info("Password must be 6 characters long")
+      setLoading(false)
+      return;
+    }
+
     try {
       const res = await loginUser(data);
       toast.success("loged in successfully")
       console.log(res);
+      setLoading(false)
+
+      // now we need to store the user info in localstorage 
       setData({
         email:"",
         password:""
       })
 
-      navigate("/")
-    } catch (error) {
-      console.log(error);
+      navigate("/dashboard")
+    } catch (e) {
+      console.log(e);
+      setError(e)
+      setLoading(false)
+      console.log(error)
       toast.error("Error in loging in user")
+    } finally{
+      setLoading(false)
     }
   }
   return (
@@ -74,6 +106,19 @@ const Login: React.FC = () => {
               </p>
             </div>
 
+          {/* alert */}
+ 
+            {
+              error &&
+              <div>
+              <Alert variant={"destructive"}>
+                <CheckCircle2Icon/>
+                <AlertTitle>
+                {error?.response?.data?.message || error?.message}
+                </AlertTitle>
+              </Alert>
+            </div>
+}
             {/* FORM */}
             <form onSubmit={handleformSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -108,8 +153,8 @@ const Login: React.FC = () => {
                 </div>
               </div>
 
-              <Button className="w-full h-10 sm:h-11">
-                Sign In
+              <Button disabled={loading} className="w-full h-10 sm:h-11 cursor-pointer">
+                {loading ? <Spinner/> : "Sign in"}
               </Button>
             </form>
 
