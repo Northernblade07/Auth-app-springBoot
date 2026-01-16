@@ -16,6 +16,10 @@ import {
   LogOut,
 } from "lucide-react"
 import { useNavigate } from "react-router"
+import { getCurrentUser } from "@/services/AuthService"
+import { useState } from "react"
+import type UserT from "@/models/User"
+import { toast } from "react-toastify"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -26,6 +30,16 @@ const UserHome = () => {
   const user = useAuth((s) => s.user)
   const logout = useAuth((s) => s.logout)
   const navigate = useNavigate();
+  const [user1 , setUser1] = useState<UserT | null>(null);
+  const getUserData=async()=>{
+    try {
+        const res = await getCurrentUser(user?.email)
+        setUser1(res)
+    } catch (error) {
+      console.log(error)
+      toast.error("error in getting user data..")
+    }
+  }
   return (
     <main className="p-6 md:p-10 space-y-8">
       {/* HEADER */}
@@ -71,7 +85,7 @@ const UserHome = () => {
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col sm:flex-row gap-4">
-          <Button variant="outline">View Profile</Button>
+          <Button onClick={()=>navigate('/dashboard/profile')} variant="outline">View Profile</Button>
           <Button
             variant="destructive"
             className="gap-2"
@@ -85,6 +99,14 @@ const UserHome = () => {
           </Button>
         </CardContent>
       </Card>
+
+      <div className="text-center">
+            <Button className="rounded-2xl px-8 text-lg" onClick={()=>{
+              getUserData()
+            }}>Get current user</Button>
+
+            <p>{user1?.name}</p>
+      </div>
     </main>
   )
 }

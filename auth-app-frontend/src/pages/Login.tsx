@@ -1,6 +1,6 @@
 import * as React from "react"
 import { motion } from "framer-motion"
-import { Link, useNavigate } from "react-router"
+import { Link, Navigate, useNavigate } from "react-router"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -28,7 +28,7 @@ const Login: React.FC = () => {
   const [error , setError] = React.useState<any>(null)
   const [loading , setLoading] = React.useState<boolean>(false)
   const navigate = useNavigate();
-
+  const checkLogin = useAuth(state =>state.checkLogin);
 
   const login = useAuth((state)=>state.login);
 
@@ -91,6 +91,12 @@ const Login: React.FC = () => {
       setLoading(false)
     }
   }
+
+  
+  if(checkLogin()){
+    return <Navigate to={'/dashboard'}/>
+  }
+
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4 sm:px-6">
       {/* Ambient glow */}

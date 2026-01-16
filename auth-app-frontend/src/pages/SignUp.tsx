@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Link, useNavigate } from "react-router"
+import { Link, Navigate, useNavigate } from "react-router"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,7 @@ import type  RegisterData  from "@/models/RegisterData"
 import { registerUser } from "@/services/AuthService"
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Spinner } from "@/components/ui/spinner"
+import useAuth from "@/auth/store"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -41,6 +42,7 @@ const handleInputchnage =(e:React.ChangeEvent<HTMLInputElement>)=>{
   
 }
 
+const checkLogin = useAuth(s => s.checkLogin);
 
 const handleFormSubmit = async(e:React.FormEvent)=>{
 e.preventDefault();
@@ -88,6 +90,10 @@ navigate('/login')
 }
 
 
+}
+
+if(checkLogin()){
+  return <Navigate to={'/dashboard'}/>
 }
 
 
