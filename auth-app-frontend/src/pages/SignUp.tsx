@@ -67,11 +67,11 @@ if(data.password.length < 6){
 }
 
 try {
-  
+  setLoading(true)
 const res =  await registerUser(data);
 console.log(res)
 toast.success("user registered successfully")
-
+setLoading(false)
 setData({
   name:"",
   email:"",
@@ -83,6 +83,8 @@ navigate('/login')
   console.log(error);
   setError(error)
   toast.error("Error in registering the User")
+} finally{
+  setLoading(false)
 }
 
 

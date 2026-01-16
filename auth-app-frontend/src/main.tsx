@@ -9,6 +9,8 @@ import  SignUp from './pages/SignUp.tsx'
 import {Services} from './pages/Services.tsx'
 import RootLayout from './pages/RootLayout.tsx'
 import UserLayout from './pages/user/UserLayout.tsx'
+import UserHome from './pages/user/UserHome.tsx'
+import UserProfile from './pages/user/UserProfile.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
@@ -19,7 +21,10 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/login' element={<Login />} />
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/services' element={<Services />} />
-          <Route path='/dashboard' element={ <UserLayout/>}/>
+          <Route path='/dashboard' element={ <UserLayout/>}>
+              <Route index element={<UserHome/>}/>    
+              <Route path='profile' element={<UserProfile/>}/>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

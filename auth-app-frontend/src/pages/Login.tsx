@@ -6,11 +6,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Github, Mail, Lock, CheckCircle2Icon } from "lucide-react"
-import { loginUser } from "@/services/AuthService"
+// import { loginUser } from "@/services/AuthService"
 import { toast } from "react-toastify"
 import type LoginData from "@/models/LoginData"
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Spinner } from "@/components/ui/spinner"
+import useAuth from "@/auth/store"
 
 
 const fadeUp = {
@@ -27,6 +28,10 @@ const Login: React.FC = () => {
   const [error , setError] = React.useState<any>(null)
   const [loading , setLoading] = React.useState<boolean>(false)
   const navigate = useNavigate();
+
+
+  const login = useAuth((state)=>state.login);
+
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
     console.log(e)
     setData(value=>({
@@ -59,7 +64,12 @@ const Login: React.FC = () => {
     }
 
     try {
-      const res = await loginUser(data);
+      setLoading(true);
+      // const res = await loginUser(data);
+
+
+      // login function from useauth/zustand 
+      const res = await login(data)
       toast.success("loged in successfully")
       console.log(res);
       setLoading(false)

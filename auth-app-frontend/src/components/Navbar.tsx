@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router'
+import { Link, NavLink, useNavigate } from 'react-router'
 import { Button } from './ui/button'
 import { Menu, X } from 'lucide-react'
+import useAuth from '@/auth/store'
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false)
-
+  const [open, setOpen] = useState(false);
+  const checkLogin= useAuth(state=> state.checkLogin);
+  const user = useAuth(state=>state.user);
+  const logout = useAuth(state=>state.logout);
+  const navigate = useNavigate();
   return (
     <>
       {/* NAVBAR */}
@@ -21,7 +25,29 @@ const Navbar = () => {
         </div>
 
         {/* DESKTOP NAV */}
-        <div className="hidden md:flex gap-4 items-center">
+{    checkLogin() ?  
+
+  <div className="hidden md:flex gap-4 items-center">
+          <NavLink to="/dashboard/profile">{user?.name || user?.email}</NavLink>
+
+          <Link to="/dashboard">
+            <Button size="sm" variant="outline">
+              Dashboard
+            </Button>
+          </Link>
+
+
+            <Button onClick={()=>{
+              logout()
+              navigate('/')
+            }
+              } size="sm" variant="outline">
+              logout
+            </Button>
+|
+        </div>
+
+:  <div className="hidden md:flex gap-4 items-center">
           <NavLink to="/">Home</NavLink>
 
           <Link to="/login">
@@ -36,7 +62,7 @@ const Navbar = () => {
             </Button>
           </Link>
         </div>
-
+}
         {/* MOBILE MENU BUTTON */}
         <button
           onClick={() => setOpen(true)}
