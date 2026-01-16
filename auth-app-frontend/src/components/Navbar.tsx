@@ -44,7 +44,6 @@ const Navbar = () => {
               } size="sm" variant="outline">
               logout
             </Button>
-|
         </div>
 
 :  <div className="hidden md:flex gap-4 items-center">

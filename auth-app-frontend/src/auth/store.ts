@@ -20,6 +20,8 @@ type AuthState = {
   login: (loginData: LoginData) => Promise<LoginResponseData>;
   logout: (silent?: boolean) => Promise<void>;
   checkLogin: () => boolean;
+
+  changeLocalLoginData:(accessToken:string , user:User , authStatus:boolean )=>void
 };
 
 const useAuth = create<AuthState>()(
@@ -74,6 +76,14 @@ const useAuth = create<AuthState>()(
         const { accessToken, authStatus } = get();
         return Boolean(accessToken && authStatus);
       },
+       changeLocalLoginData:(accessToken,user , authStatus)=>{
+        set({
+          accessToken,
+          user,
+          authStatus,
+          
+        });
+      }
     }),
     {
       name: LOCAL_KEY,
